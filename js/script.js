@@ -39,10 +39,7 @@ function loadData() {
         })
     );
 
-    /**
-     * Request articles from NYTimes Website
-     *
-     */
+    /** Request articles from NYTimes Website */
     var nytURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=65f5ceb872b24700a3e153a83d627480&q=' + cityValue + '&sort=newest';
 
     $.getJSON( nytURL, function( data ) {
@@ -65,8 +62,33 @@ function loadData() {
 
         }
 
+        return false;
+
     }).on('error', function( data ) {
         $nytHeaderElem.text('New York Times articles could not be loaded');
+    });
+
+    /**
+     * Find related links on Wikipedia
+     *
+     */
+    var wikipediaURL = 'https://en.wikipedia.org/w/api.php';
+    $.ajax( wikipediaURL, {
+        dataType    : 'jsonp',
+        data        : 'action=opensearch&search=' + cityValue + '&format=json',
+        success     : function( data ) {
+            console.log(data);
+            var pages = data[1];
+            var urls = data[3];
+
+            for( var i = 0, l = pages.length; i < l; i++ ) {
+                $wikiElem.append(
+                    $('<li/>').append(
+                        $('<a/>').attr('href', urls[i]).text(pages[i])
+                    )
+                );
+            }
+        }
     });
 
     return false;

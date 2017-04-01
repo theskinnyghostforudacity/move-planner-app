@@ -49,6 +49,12 @@ function loadData() {
 
         $nytHeaderElem.text('New York Times Articles about ' + cityValue);
         var posts = data.response.docs;
+
+        if( posts.length < 1 ) {
+            $nytHeaderElem.text("No articles found about " + cityValue);
+            return false;
+        }
+
         for( var i = 0, l = posts.length; i < l; i++ ) {
 
             var listHTML = $('<li/>').attr('class', 'article');
@@ -59,6 +65,8 @@ function loadData() {
 
         }
 
+    }).on('error', function( data ) {
+        $nytHeaderElem.text('New York Times articles could not be loaded');
     });
 
     return false;

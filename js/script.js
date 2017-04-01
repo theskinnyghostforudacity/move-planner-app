@@ -39,6 +39,28 @@ function loadData() {
         })
     );
 
+    /**
+     * Request articles from NYTimes Website
+     *
+     */
+    var nytURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=65f5ceb872b24700a3e153a83d627480&q=' + cityValue + '&sort=newest';
+
+    $.getJSON( nytURL, function( data ) {
+
+        $nytHeaderElem.text('New York Times Articles about ' + cityValue);
+        var posts = data.response.docs;
+        for( var i = 0, l = posts.length; i < l; i++ ) {
+
+            var listHTML = $('<li/>').attr('class', 'article');
+            var linkHTML = $('<a/>').attr('href', posts[i].web_url).text(posts[i].headline.main);
+            var descHTML = $('<p/>').text(posts[i].snippet);
+
+            $nytElem.append(listHTML.append(linkHTML).append(descHTML));
+
+        }
+
+    });
+
     return false;
 };
 

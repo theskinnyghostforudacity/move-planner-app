@@ -72,6 +72,9 @@ function loadData() {
      * Find related links on Wikipedia
      *
      */
+    var wikiRequestTimeout = setTimeout(function() {
+        $wikiElem.text("failed to get Wikipedia resources");
+    });
     var wikipediaURL = 'https://en.wikipedia.org/w/api.php';
     $.ajax( wikipediaURL, {
         dataType    : 'jsonp',
@@ -88,6 +91,8 @@ function loadData() {
                     )
                 );
             }
+
+            clearTimeout(wikiRequestTimeout);
         }
     });
 

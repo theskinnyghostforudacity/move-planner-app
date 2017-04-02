@@ -64,7 +64,7 @@ function loadData() {
 
         return false;
 
-    }).on('error', function( data ) {
+    }).error(function( data ) {
         $nytHeaderElem.text('New York Times articles could not be loaded');
     });
 
